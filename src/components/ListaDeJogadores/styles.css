@@ -1,0 +1,29 @@
+/* src/components/ListaDeJogadores/styles.css */
+
+.lista-jogadores li {
+  text-align: left;
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: #e9ecef;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+}
+
+.lista-jogadores li strong {
+  font-weight: bold;
+}
+
+.loading {
+  font-size: 16px;
+  color: #284ea7;
+  text-align: center;
+  margin: 20px 0;
+}
+
+@media (max-width: 600px) {
+  .lista-jogadores li {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
