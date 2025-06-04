@@ -1,28 +1,25 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
-function useMensagem() {
-  const [mensagem, setMensagem] = useState('');
-  const [tipoMensagem, setTipoMensagem] = useState('');
-  const [visivel, setVisivel] = useState(false);
+function useMensagem()
+{
+    const [mensagem, setMensagem] = useState('')
+    const [tipoMensagem, setTipoMensagem] = useState('')
+    const [visivel, setVisivel] = useState('')
 
-  const exibirMensagem = useCallback((texto, tipo = 'sucesso') => {
-    setMensagem(texto);
-    setTipoMensagem(tipo);
-    setVisivel(true);
-  }, []);
+    const exibirMensagem = useCallback((texto, tipo = 'sucesso') =>
+    {
+        setMensagem(texto)
+        setTipoMensagem(tipo)
+        setVisivel(true)
+        setTimeout(() => setVisivel(false), 5000)
+    }, [])
 
-  const fecharMensagem = useCallback(() => {
-    setVisivel(false);
-  }, []);
+    const fecharMensagem = useCallback(() =>
+    {
+        setVisivel(false)
+    }, [])
 
-  useEffect(() => {
-    if (visivel) {
-      const timer = setTimeout(() => setVisivel(false), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [visivel]);
-
-  return { mensagem, tipoMensagem, visivel, exibirMensagem, fecharMensagem };
+    return { mensagem, tipoMensagem, visivel, exibirMensagem, fecharMensagem }
 }
 
-export default useMensagem;
+export default useMensagem

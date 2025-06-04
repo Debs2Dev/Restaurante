@@ -1,177 +1,124 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useMensagem from '../../hooks/useMensagem';
-import MensagemFeedback from '../MensagemFeedback';
-import logo from '../../assets/images/logo.png';
-import axios from 'axios';
-import './styles.css';
+// src\components\FormularioCadastro\index.js
 
-function FormularioCadastro() {
-  const [nome, setNome] = useState('');
-  const [sexo, setSexo] = useState('');
-  const [idade, setIdade] = useState('');
-  const [altura, setAltura] = useState('');
-  const [peso, setPeso] = useState('');
-  const [posicao, setPosicao] = useState('');
-  const [numeroDaCamisa, setNumeroDaCamisa] = useState('');
-  const navigate = useNavigate();
-  const { exibirMensagem, mensagem, tipoMensagem, visivel, fecharMensagem } = useMensagem();
+import { useState } from "react";
+import './styles.css'
+import { useNavigate } from "react-router-dom";
+import useMensagem from '../../hooks/useMensagem'
+import MensagemFeedback from '../MensagemFeedback'
+import logo from '../../assets/images/logo.png'
+import axios from 'axios'
 
-  const cadastrarJogador = async () => {
-    if (!nome.trim()) {
-      exibirMensagem('O nome é obrigatório.', 'erro');
-      return;
-    }
-    if (!sexo) {
-      exibirMensagem('O sexo deve ser selecionado.', 'erro');
-      return;
-    }
-    if (isNaN(idade) || Number(idade) <= 0) {
-      exibirMensagem('A idade deve ser um número positivo.', 'erro');
-      return;
-    }
-    if (isNaN(altura) || Number(altura) <= 0) {
-      exibirMensagem('A altura deve ser um número positivo.', 'erro');
-      return;
-    }
-    if (isNaN(peso) || Number(peso) <= 0) {
-      exibirMensagem('O peso deve ser um número positivo.', 'erro');
-      return;
-    }
-    if (!posicao) {
-      exibirMensagem('A posição deve ser selecionada.', 'erro');
-      return;
-    }
-    if (isNaN(numeroDaCamisa) || Number(numeroDaCamisa) <= 0) {
-      exibirMensagem('O número da camisa deve ser um número positivo.', 'erro');
-      return;
-    }
+function FormularioCadastro()
+{
+    const [nome, setNome] = useState('')
+    const [descricao, setDescricao] = useState('')
+    const [preco, setPreco] = useState('')
+    const [categoria, setCategoria] = useState('')
+    const [disponibilidade, setDisponibilidade] = useState('')
+    const [url, setUrl] = useState('')
+    const navigate = useNavigate()
+    const { exibirMensagem , mensagem, tipoMensagem, visivel, fecharMensagem } = useMensagem()
 
-    try {
-      const response = await axios.post('https://site-dois.onrender.com/jogador', {
-        nome,
-        sexo,
-        idade: Number(idade),
-        altura: Number(altura),
-        peso: Number(peso),
-        posicao,
-        numeroDaCamisa: Number(numeroDaCamisa),
-      });
-
-      exibirMensagem(response.data.mensagem || 'Jogador cadastrado com sucesso!', 'sucesso');
-
-      setNome('');
-      setSexo('');
-      setIdade('');
-      setAltura('');
-      setPeso('');
-      setPosicao('');
-      setNumeroDaCamisa('');
-    } catch (error) {
-      let erroMsg = 'Erro ao conectar ao servidor.';
-      if (error.response && error.response.data) {
-        erroMsg = error.response.data.mensagem || erroMsg;
-        if (error.response.data.erros) {
-          erroMsg += ' ' + Object.values(error.response.data.erros).join(', ');
+    const cadastrarPrato = async () =>
+    {
+        try
+        {
+            const response = await axios.post('https://restaurante-r6uq.onrender.com/api/pratos', {nome, descricao, preco, categoria, disponibilidade, url})
+            exibirMensagem(response.data.mensagem || 'Prato cadastrado com sucesso!', 'sucesso')
+            setNome('')
+            setDescricao('')
+            setPreco('')
+            setCategoria('')
+            setUrl('')
+            setDisponibilidade('')
+        } catch (error)
+        {
+            let erroMsg = 'Erro ao conectar ao servidor.'
+            if (error.response && error.response.data)
+                {
+                erroMsg = error.response.data.mensagem
+                if (error.response.data.erros) {
+                    erroMsg += ' ' + Object.values(error.response.data.erros).join(', ')
+                }
+            }
+            exibirMensagem(erroMsg, 'erro')
         }
-      }
-      exibirMensagem(erroMsg, 'erro');
     }
-  };
 
-  return (
-    <div className="container">
-      <img src={logo} alt="Logo da empresa" />
-      <h2>Cadastro de Jogadores</h2>
-      <form onSubmit={(e) => { e.preventDefault(); cadastrarJogador(); }}>
-        <label htmlFor="nome">Nome</label>
-        <input
-          type="text"
-          id="nome"
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <label htmlFor="sexo">Sexo</label>
-        <select
-          id="sexo"
-          value={sexo}
-          onChange={(e) => setSexo(e.target.value)}
-          required
-        >
-          <option value="">Selecione o sexo</option>
-          <option value="MASCULINO">Masculino</option>
-          <option value="FEMININO">Feminino</option>
-        </select>
-        <label htmlFor="idade">Idade</label>
-        <input
-          type="number"
-          id="idade"
-          placeholder="Idade"
-          value={idade}
-          onChange={(e) => setIdade(e.target.value)}
-          min="1"
-          required
-        />
-        <label htmlFor="altura">Altura (m)</label>
-        <input
-          type="number"
-          id="altura"
-          placeholder="Altura"
-          value={altura}
-          onChange={(e) => setAltura(e.target.value)}
-          step="0.01"
-          min="0.01"
-          required
-        />
-        <label htmlFor="peso">Peso (kg)</label>
-        <input
-          type="number"
-          id="peso"
-          placeholder="Peso"
-          value={peso}
-          onChange={(e) => setPeso(e.target.value)}
-          step="0.1"
-          min="0.1"
-          required
-        />
-        <label htmlFor="posicao">Posição</label>
-        <select
-          id="posicao"
-          value={posicao}
-          onChange={(e) => setPosicao(e.target.value)}
-          required
-        >
-          <option value="">Selecione a posição</option>
-          <option value="Goleiro">Goleiro</option>
-          <option value="Zagueiro">Zagueiro</option>
-          <option value="Meio-campista">Meio-campista</option>
-          <option value="Atacante">Atacante</option>
-        </select>
-        <label htmlFor="numeroDaCamisa">Número da Camisa</label>
-        <input
-          type="number"
-          id="numeroDaCamisa"
-          placeholder="Número da Camisa"
-          value={numeroDaCamisa}
-          onChange={(e) => setNumeroDaCamisa(e.target.value)}
-          min="1"
-          required
-        />
-        <button type="submit">Cadastrar</button>
-      </form>
-      <button onClick={() => navigate('/listar-jogadores')} className="link-jogadores">
-        Ver Jogadores Cadastrados
-      </button>
-      <MensagemFeedback
-        mensagem={mensagem}
-        tipo={tipoMensagem}
-        visivel={visivel}
-        onclose={fecharMensagem}
-      />
-    </div>
-  );
+    return (
+        <div className="container">
+            <img src={logo} alt="Logo da empresa" />
+            <h2>Cadastro de pratos</h2>
+            <form onSubmit={(e) => {e.preventDefault(); cadastrarPrato()}}>
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Nome"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    required
+                />
+                <select
+                    id="categoria"
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value)}
+                    required
+                >
+                    <option value="">Selecione a categoria</option>
+                    <option value="ENTRADA">Entrada</option>
+                    <option value="SOBREMESA">Sobremesa</option>
+                    <option value="PRATO_PRINCIPAL">Prato Principal</option>
+                    <option value="BEBIDA">Bebida</option>
+                </select>
+                <input
+                    type="descricao"
+                    id="descricao"
+                    placeholder="Descricao"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
+                    required
+                />
+                <input
+                    type="preco"
+                    id="preco"
+                    placeholder="Preco"
+                    value={preco}
+                    onChange={(e) => setPreco(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    id="url"
+                    placeholder="Url"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    required
+                />
+                <select
+                    id="disponibilidade"
+                    value={disponibilidade}
+                    onChange={(e) => setDisponibilidade(e.target.value)}
+                    required
+                >
+                    <option value="">Selecione a disponibilidade</option>
+                    <option value="EM_ESTOQUE">Em Estoque</option>
+                    <option value="ESGOTADO">Esgotado</option>
+                </select>
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <button onClick={() => navigate('/pratos')} className="link-pratos">
+                Ver pratos cadastrados
+            </button>
+
+            <MensagemFeedback
+                mensagem={mensagem}
+                tipo={tipoMensagem}
+                visivel={visivel}
+                onclose={fecharMensagem}
+            />
+        </div>
+    )
 }
 
-export default FormularioCadastro;
+export default FormularioCadastro
