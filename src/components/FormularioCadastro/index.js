@@ -10,12 +10,12 @@ import axios from 'axios'
 
 function FormularioCadastro()
 {
-    const [nome, setNome] = useState('')
+    const [nomePrato, setNomePrato] = useState('')
     const [descricao, setDescricao] = useState('')
     const [preco, setPreco] = useState('')
     const [categoria, setCategoria] = useState('')
     const [disponibilidade, setDisponibilidade] = useState('')
-    const [url, setUrl] = useState('')
+    const [urlImagem, setUrlImagem] = useState('')
     const navigate = useNavigate()
     const { exibirMensagem , mensagem, tipoMensagem, visivel, fecharMensagem } = useMensagem()
 
@@ -23,13 +23,13 @@ function FormularioCadastro()
     {
         try
         {
-            const response = await axios.post('https://restaurante-r6uq.onrender.com/api/pratos', {nome, descricao, preco, categoria, disponibilidade, url})
+            const response = await axios.post('https://restaurante-r6uq.onrender.com/api/pratos', {nomePrato, descricao, preco, categoria, disponibilidade, urlImagem})
             exibirMensagem(response.data.mensagem || 'Prato cadastrado com sucesso!', 'sucesso')
-            setNome('')
+            setNomePrato('')
             setDescricao('')
             setPreco('')
             setCategoria('')
-            setUrl('')
+            setUrlImagem('')
             setDisponibilidade('')
         } catch (error)
         {
@@ -54,8 +54,8 @@ function FormularioCadastro()
                     type="text"
                     id="nome"
                     placeholder="Nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                    value={nomePrato}
+                    onChange={(e) => setNomePrato(e.target.value)}
                     required
                 />
                 <select
@@ -90,8 +90,8 @@ function FormularioCadastro()
                     type="text"
                     id="url"
                     placeholder="Url"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    value={urlImagem}
+                    onChange={(e) => setUrlImagem(e.target.value)}
                     required
                 />
                 <select
