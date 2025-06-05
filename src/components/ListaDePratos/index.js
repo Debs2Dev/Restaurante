@@ -14,7 +14,7 @@ function ListaDePratos()
             {
             try
             {
-                const response = await axios.get('https://antony-brunna.onrender.com/pratos')
+                const response = await axios.get('https://restaurante-j86g.onrender.com/api/pratos')
                 setPratos(response.data)
             } catch (error)
             {
@@ -34,12 +34,12 @@ function ListaDePratos()
                     console.log(prato.url); // Adicione esta linha
                     return (
                         <li key={prato.id}>
-                            <strong>Nome: </strong> {prato.nome}<br />
+                            <strong>Nome: </strong> {prato.nomePrato}<br />
                             <strong>Descricao: </strong> {prato.descricao}<br />
                             <strong>Preco: </strong> {prato.preco}<br />
                             <strong>Categoria: </strong> {prato.categoria}<br />
                             <strong>Imagem: </strong><br />
-                            <img src={prato.url} alt={prato.nome} style={{maxWidth: '200px', maxHeight: '200px'}} /><br />
+                            <img src={prato.urlImagem} alt={prato.nomePrato} style={{maxWidth: '200px', maxHeight: '200px'}} /><br />
                             <strong>Disponibilidade: </strong> {prato.disponibilidade}<br />
                         </li>
                     )
