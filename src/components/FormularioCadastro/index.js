@@ -23,13 +23,13 @@ function FormularioCadastro()
     {
         try
         {
-            const response = await axios.post('https://antony-brunna.onrender.com/pratos', {nome, descricao, preco, categoria, disponibilidade, url})
+            const response = await axios.post('https://restaurante-j86g.onrender.com/api/pratos', {nomePrato, descricao, preco, categoria, disponibilidade, urlImagem})
             exibirMensagem(response.data.mensagem || 'Prato cadastrado com sucesso!', 'sucesso')
-            setNome('')
+            setNomePrato('')
             setDescricao('')
             setPreco('')
             setCategoria('')
-            setUrl('')
+            setUrlImagem('')
             setDisponibilidade('')
         } catch (error)
         {
@@ -54,7 +54,7 @@ function FormularioCadastro()
                     type="text"
                     id="nome"
                     placeholder="Nome"
-                    value={nome}
+                    value={nomePrato}
                     onChange={(e) => setNome(e.target.value)}
                     required
                 />
@@ -90,8 +90,8 @@ function FormularioCadastro()
                     type="text"
                     id="url"
                     placeholder="Url"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    value={urlImagem}
+                    onChange={(e) => setUrlImagem(e.target.value)}
                     required
                 />
                 <select
